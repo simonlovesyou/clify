@@ -15,7 +15,8 @@
     "test": "lerna run test",
     "build": "yarn build:ts",
     "build:ts": "lerna run build:ts",
-    "bootstrap": "lerna bootstrap"
+    "bootstrap": "lerna bootstrap",
+    "clean": "lerna clean && lerna run clean"
   },
   "author": "Simon Johansson <simonljohansson92@gmail.com>",
   "license": "MIT",

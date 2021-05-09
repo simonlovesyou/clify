@@ -6,8 +6,10 @@
   "author": "Simon Johansson <simonljohansson92@gmail.com>",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:ts": "yarn tsc --project .",
-    "postinstall": "#cd node_modules/ts-json-schema-generator && rm -rf dist/ && yarn && yarn build && cd ../.."
+    "build": "yarn build:ts",
+    "build:ts": "yarn tsc --project ./tsconfig.build.json",
+    "clean": "rm -rf ./dist/",
+    "prepublish": "yarn clean && yarn build"
   },
   "files": ["src", "dist", "README.md"],
   "license": "MIT",

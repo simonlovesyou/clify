@@ -10,8 +10,10 @@
   "scripts": {
     "test": "yarn test:unit",
     "test:unit": "yarn jest src/ --coverage --verbose",
+    "clean": "rm -rf ./dist/ ./coverage/",
     "build:ts": "yarn tsc --project tsconfig.build.json",
-    "build": "yarn build:ts"
+    "build": "yarn build:ts",
+    "prepublish": "yarn clean && yarn build"
   },
   "dependencies": {
     "@cling/parser": "^0.0.5",

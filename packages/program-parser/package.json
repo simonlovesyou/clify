@@ -11,8 +11,9 @@
     "build:ts": "yarn tsc --project ./tsconfig.build.json",
     "build": "yarn build:ts",
     "test": "yarn test:unit",
-    "test:unit": "yarn jest ./tests/runner.spec.ts",
-    "prepublish": "rm -rf dist/ && yarn build"
+    "test:unit": "yarn jest ./tests/runner.spec.ts --coverage",
+    "clean": "rm -rf ./dist",
+    "prepublish": "yarn clean && yarn build"
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.11",
