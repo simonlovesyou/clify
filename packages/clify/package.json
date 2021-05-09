@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "author": "Simon Johansson <simonljohansson92@gmail.com>",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:ts": "yarn tsc --project .",
     "postinstall": "#cd node_modules/ts-json-schema-generator && rm -rf dist/ && yarn && yarn build && cd ../.."
   },
   "files": ["src", "dist", "README.md"],
-  "author": "",
   "license": "MIT",
   "devDependencies": {
     "@clify/program-parser": "^1.0.0",

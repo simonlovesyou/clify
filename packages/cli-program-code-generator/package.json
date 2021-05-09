@@ -4,7 +4,7 @@
   "description": "Generate a CLI program",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
-  "author": "@simonlovesyou",
+  "author": "Simon Johansson <simonljohansson92@gmail.com>",
   "license": "MIT",
   "private": false,
   "scripts": {

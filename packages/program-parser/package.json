@@ -4,7 +4,7 @@
   "description": "Parse a program for clify",
   "main": "dist/index.js",
   "typings": "./dist/index.d.ts",
-  "author": "@simonlovesyou",
+  "author": "Simon Johansson <simonljohansson92@gmail.com>",
   "license": "MIT",
   "files": ["src", "dist", "README.md", "LICENSE.md"],
   "scripts": {
