@@ -80,7 +80,6 @@ export const getCliProgramForProgram = (options: Options) => (
   const commandSchema = createCommandSchemaFromJSONSchema(options)(
     parsedProgram[0].schema
   );
-  debugger;
   return dedent`
     const programSchema = ${JSON.stringify(commandSchema, null, 2).replace(
       /("type": "\w+")/g,
@@ -172,12 +171,11 @@ export const getUserlandExecution = (options: Options) => (
   parsedFunction: ParsedFunction,
   commandSchema: CommandLineSchema
 ) => {
-  debugger;
   const argumentPositions = getArgumentPosition(options)(
     parsedFunction.schema,
     commandSchema
   );
-  debugger;
+
   return dedent`
   const result = ${parsedFunction.async ? "await" : ""} ${
     parsedFunction.name

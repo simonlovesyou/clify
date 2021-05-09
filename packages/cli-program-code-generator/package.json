@@ -10,7 +10,7 @@
   "scripts": {
     "test": "yarn test:unit",
     "test:unit": "yarn jest src/ --coverage --verbose",
-    "clean": "rm -rf ./dist/ ./coverage/",
+    "clean": "rm -rf ./dist/ ./coverage/ ./yarn-error.log",
     "build:ts": "yarn tsc --project tsconfig.build.json",
     "build": "yarn build:ts",
     "prepublish": "yarn clean && yarn build"
