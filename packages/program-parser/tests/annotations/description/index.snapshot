@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`annotations description should match snapshot 1`] = `
+Array [
+  Object {
+    "async": false,
+    "defaultExport": false,
+    "description": undefined,
+    "exported": false,
+    "filePath": "/Users/simon.johansson/repos/clify/packages/program-parser/tests/annotations/description/index.ts",
+    "internal": false,
+    "name": "numberIdentity",
+    "public": false,
+    "schema": Object {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "additionalProperties": false,
+      "properties": Object {
+        "numberA": Object {
+          "description": "numberA description text goes here",
+          "type": "number",
+        },
+      },
+      "required": Array [
+        "numberA",
+      ],
+      "type": "object",
+    },
+  },
+]
+`;

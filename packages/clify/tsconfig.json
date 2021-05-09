@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
+    "esModuleInterop": true,
     "target": "es6",
     "module": "commonjs",
     "moduleResolution": "node",
-    "noImplicitAny": true,
     "preserveConstEnums": true,
     "outDir": "dist",
     "sourceMap": true,
     "declaration": true,
     "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
     "typeRoots": [
       "node_modules/@types",
       "types"

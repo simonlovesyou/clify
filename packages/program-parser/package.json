@@ -1,0 +1,34 @@
+{
+  "name": "@clify/program-parser",
+  "version": "1.0.0",
+  "description": "Parse a program for clify",
+  "main": "dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "author": "@simonlovesyou",
+  "license": "MIT",
+  "files": ["src", "dist", "README.md", "LICENSE.md"],
+  "scripts": {
+    "build:ts": "yarn tsc --project ./tsconfig.build.json",
+    "build": "yarn build:ts",
+    "test": "yarn test:unit",
+    "test:unit": "yarn jest ./tests/runner.spec.ts",
+    "prepublish": "rm -rf dist/ && yarn build"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^9.0.11",
+    "@types/jest": "^26.0.23",
+    "@types/jest-specific-snapshot": "^0.5.5",
+    "@types/json-schema": "^7.0.7",
+    "@types/node": "^15.0.2",
+    "fs-extra": "^10.0.0",
+    "globby": "^11.0.3",
+    "jest": "^26.6.3",
+    "jest-specific-snapshot": "^4.0.0",
+    "ts-jest": "^26.5.6",
+    "typescript": "^4.2.4"
+  },
+  "dependencies": {
+    "json-schema-deref-sync": "^0.14.0",
+    "ts-json-schema-generator": "^0.92.0"
+  }
+}

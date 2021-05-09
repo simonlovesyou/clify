@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "preserveConstEnums": true,
+    "outDir": "dist",
+    "sourceMap": true,
+    "declaration": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "importHelpers": true,
+    "typeRoots": [
+      "node_modules/@types",
+      "types"
+    ],
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "tests/**/*", "jest.config.js"]
+  }

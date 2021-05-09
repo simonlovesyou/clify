@@ -1,0 +1,32 @@
+{
+  "name": "@clify/cli-program-code-generator",
+  "version": "0.0.1",
+  "description": "Generate a CLI program",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "author": "@simonlovesyou",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "test": "yarn test:unit",
+    "test:unit": "yarn jest src/ --coverage --verbose",
+    "build:ts": "yarn tsc --project tsconfig.build.json",
+    "build": "yarn build:ts"
+  },
+  "dependencies": {
+    "@cling/parser": "^0.0.5",
+    "@cling/utils": "^0.0.2",
+    "dedent": "^0.7.0",
+    "fp-ts": "^2.10.5",
+    "json-schema": "^0.3.0",
+    "prettier": "^2.2.1"
+  },
+  "devDependencies": {
+    "@clify/program-parser": "^1.0.0",
+    "@types/jest": "^26.0.23",
+    "@types/json-schema": "^7.0.7",
+    "@types/node": "^15.0.2",
+    "jest": "^26.6.3",
+    "ts-jest": "^26.5.6"
+  }
+}

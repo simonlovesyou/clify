@@ -1,0 +1,160 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`single function one required param one optional param in object should output the correct program 1`] = `
+"#!/usr/bin/env node
+import parser from \\"@cling/parser\\";
+import { default as add } from \\"./foo\\";
+
+try {
+  const programSchema = {
+    arguments: {
+      numberA: {
+        type: \\"number\\" as const,
+      },
+    },
+    options: {
+      numberB: {
+        type: \\"number\\" as const,
+      },
+    },
+  };
+
+  const { arguments, options } = parser(programSchema);
+
+  const result = add.apply(null, [
+    arguments[\\"numberA\\"],
+    {
+      [\\"numberB\\"]: options[\\"numberB\\"],
+    },
+  ]);
+
+  console.log(result);
+  return process.exit(0);
+} catch (error) {
+  console.error(error.message);
+  process.exit(1);
+}
+"
+`;
+
+exports[`single function one required param one optional param should output the correct program 1`] = `
+"#!/usr/bin/env node
+import parser from \\"@cling/parser\\";
+import { default as add } from \\"./foo\\";
+
+try {
+  const programSchema = {
+    arguments: {
+      numberA: {
+        type: \\"number\\" as const,
+      },
+    },
+    options: {
+      numberB: {
+        type: \\"number\\" as const,
+      },
+    },
+  };
+
+  const { arguments, options } = parser(programSchema);
+
+  const result = add.apply(null, [arguments[\\"numberA\\"], options[\\"numberB\\"]]);
+
+  console.log(result);
+  return process.exit(0);
+} catch (error) {
+  console.error(error.message);
+  process.exit(1);
+}
+"
+`;
+
+exports[`single function two optional params should output the correct program 1`] = `
+"#!/usr/bin/env node
+import parser from \\"@cling/parser\\";
+import { default as add } from \\"./foo\\";
+
+try {
+  const programSchema = {
+    options: {
+      numberA: {
+        type: \\"number\\" as const,
+      },
+      numberB: {
+        type: \\"number\\" as const,
+      },
+    },
+  };
+
+  const { options } = parser(programSchema);
+
+  const result = add.apply(null, [options[\\"numberA\\"], options[\\"numberB\\"]]);
+
+  console.log(result);
+  return process.exit(0);
+} catch (error) {
+  console.error(error.message);
+  process.exit(1);
+}
+"
+`;
+
+exports[`single function two required params options.positionals = false should output the correct program 1`] = `
+"#!/usr/bin/env node
+import parser from \\"@cling/parser\\";
+import { default as add } from \\"./foo\\";
+
+try {
+  const programSchema = {
+    arguments: {
+      numberA: {
+        type: \\"number\\" as const,
+      },
+      numberB: {
+        type: \\"number\\" as const,
+      },
+    },
+  };
+
+  const { arguments } = parser(programSchema);
+
+  const result = add.apply(null, [arguments[\\"numberA\\"], arguments[\\"numberB\\"]]);
+
+  console.log(result);
+  return process.exit(0);
+} catch (error) {
+  console.error(error.message);
+  process.exit(1);
+}
+"
+`;
+
+exports[`single function two required params options.positionals = true should output the correct program 1`] = `
+"#!/usr/bin/env node
+import parser from \\"@cling/parser\\";
+import { default as add } from \\"./foo\\";
+
+try {
+  const programSchema = {
+    positionals: [
+      {
+        type: \\"number\\" as const,
+      },
+      {
+        type: \\"number\\" as const,
+      },
+    ],
+  };
+
+  const { positionals } = parser(programSchema);
+
+  const result = add.apply(null, [positionals[\\"0\\"], positionals[\\"1\\"]]);
+
+  console.log(result);
+  return process.exit(0);
+} catch (error) {
+  console.error(error.message);
+  process.exit(1);
+}
+"
+`;

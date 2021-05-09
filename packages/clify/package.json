@@ -1,0 +1,40 @@
+{
+  "name": "@clify/clify",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:ts": "yarn tsc --project .",
+    "postinstall": "#cd node_modules/ts-json-schema-generator && rm -rf dist/ && yarn && yarn build && cd ../.."
+  },
+  "files": ["src", "dist", "README.md"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@clify/program-parser": "^1.0.0",
+    "@types/change-case": "^2.3.1",
+    "@types/dedent": "^0.7.0",
+    "@types/fs-extra": "^9.0.8",
+    "@types/json-schema": "^7.0.7",
+    "@types/node": "^14.14.34",
+    "@types/ramda": "^0.27.40",
+    "@types/snake-case": "^1.1.2",
+    "prettier": "^2.2.1",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.3"
+  },
+  "dependencies": {
+    "@clify/cli-program-code-generator": "^0.0.1",
+    "@clify/program-parser": "^1.0.0",
+    "@cling/parser": "^0.0.4",
+    "change-case": "^4.1.2",
+    "command-line-args": "^5.1.1",
+    "dedent": "^0.7.0",
+    "fp-ts": "^2.9.5",
+    "fs-extra": "^9.1.0",
+    "json-schema-deref-sync": "^0.14.0",
+    "ramda": "^0.27.1",
+    "ts-json-schema-generator": "^0.91.0"
+  }
+}

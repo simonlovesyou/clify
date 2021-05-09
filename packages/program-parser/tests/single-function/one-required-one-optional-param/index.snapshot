@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`single-function one-required-one-optional-param should match snapshot 1`] = `
+Array [
+  Object {
+    "async": false,
+    "defaultExport": false,
+    "description": undefined,
+    "exported": false,
+    "filePath": "/Users/simon.johansson/repos/clify/packages/program-parser/tests/single-function/one-required-one-optional-param/index.ts",
+    "internal": false,
+    "name": "best",
+    "public": false,
+    "schema": Object {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "additionalProperties": false,
+      "properties": Object {
+        "param": Object {
+          "type": "string",
+        },
+        "paramB": Object {
+          "type": "number",
+        },
+      },
+      "required": Array [
+        "param",
+      ],
+      "type": "object",
+    },
+  },
+]
+`;

@@ -1,4 +1,6 @@
 import * as ts from "typescript";
+import getJsonSchemaForFunction from './getJsonSchemaForFunction'
+import * as path from 'path'
 
 function isNodeExported(node: ts.Node): boolean {
   return (
@@ -11,53 +13,6 @@ function isNodeExported(node: ts.Node): boolean {
 
 const isJSDocTagName = (tagName: string) => (jsDocTag: ts.JSDocTag) =>
   jsDocTag.tagName.escapedText === tagName;
-
-type Type = string | Record<string, string>;
-
-const getType = (
-  type: ts.TypeNode,
-  checker: ts.TypeChecker
-): Type | Record<string, Type> => {
-  if (!type) {
-    return "any";
-  }
-  if (ts.isTypeReferenceNode(type)) {
-    const typel = checker.getTypeAtLocation(type);
-    debugger;
-    console.log();
-    return "something";
-    throw new Error("isTypeReferenceNode");
-  }
-  if (ts.isTypeLiteralNode(type)) {
-    return type.members.reduce(
-      (acc, member) => ({
-        ...acc,
-        [member.name.getText()]: ts.isPropertySignature(member)
-          ? getType(member.type, checker)
-          : "any",
-      }),
-      {}
-    );
-  }
-  if (ts.SyntaxKind.NumberKeyword === type.kind) {
-    return "number";
-  }
-  if (ts.SyntaxKind.StringKeyword === type.kind) {
-    return "string";
-  }
-  if (ts.SyntaxKind.AnyKeyword === type.kind) {
-    return "any";
-  }
-  if (ts.SyntaxKind.BooleanKeyword === type.kind) {
-    return "boolean";
-  }
-  if (ts.SyntaxKind.UndefinedKeyword === type.kind) {
-    return "undefined";
-  }
-  if (ts.SyntaxKind.NullKeyword === type.kind) {
-    return "null";
-  }
-};
 
 const declarationHasModifier = (
   modifierKind: Partial<ts.ModifierSyntaxKind>
@@ -76,22 +31,6 @@ const isFunctionAsynchronous = declarationHasModifier(
   ts.SyntaxKind.AsyncKeyword
 );
 
-const parseParameter = (parameter: ts.ParameterDeclaration, checker: ts.TypeChecker) => {
-
-  const parent = parameter.parent
-
-  const jsDocTags = ts.getJSDocTags(parent);
-
-  return {
-    name: parameter.name.getText(),
-    optional: Boolean(parameter.questionToken),
-    type: ts.isTypeLiteralNode(parameter.type) ? parameter.type.members.map(member => parseParameter(member, checker)),
-    description: jsDocTags.filter(ts.isJSDocParameterTag).find((jsDocTag) => {
-      return jsDocTag.name.getText() === parameter.name.getText();
-    })?.comment,
-  };
-};
-
 const createFunctionDeclarationParser = (checker: ts.TypeChecker) => {
   return (functionDeclaration: ts.FunctionDeclaration | ts.ArrowFunction) => {
     const signature = checker.getSignatureFromDeclaration(functionDeclaration);
@@ -102,18 +41,10 @@ const createFunctionDeclarationParser = (checker: ts.TypeChecker) => {
     const name = ts.isFunctionDeclaration(functionDeclaration)
       ? functionDeclaration.name.text
       : (functionDeclaration.parent as ts.VariableDeclaration).name.getText();
-    const parameters = functionDeclaration.parameters.map((parameter) => ({
-      name: parameter.name.getText(),
-      optional: Boolean(parameter.questionToken),
-      type: getType(parameter.type, checker) as ReturnType<typeof getType>,
-      description: jsDocTags.filter(ts.isJSDocParameterTag).find((jsDocTag) => {
-        return jsDocTag.name.getText() === parameter.name.getText();
-      })?.comment,
-    }));
-    debugger;
+    const schema = getJsonSchemaForFunction(functionDeclaration)
     return {
       name,
-      parameters,
+      schema,
       async: isFunctionAsynchronous(functionDeclaration),
       filePath: functionDeclaration.getSourceFile().fileName,
       exported: isDeclarationExported(functionDeclaration),
@@ -131,8 +62,8 @@ const createFunctionDeclarationParser = (checker: ts.TypeChecker) => {
   };
 };
 
-const parseProgram = (file: string) => {
-  const program = ts.createProgram([file], {
+const parseFile = (file: string) => {
+  const program = ts.createProgram([path.resolve(file)], {
     setParentNodes: true,
   });
   const checker = program.getTypeChecker();
@@ -146,18 +77,16 @@ const parseProgram = (file: string) => {
       return;
     }
     const sourceFile = node.getSourceFile();
-    if (sourceFile.fileName === file) {
+    if (path.resolve(sourceFile.fileName) === path.resolve(file)) {
       if (
         ts.isVariableDeclaration(node) &&
         ts.isArrowFunction(node.initializer)
       ) {
-        debugger;
         const result = createFunctionDeclarationParser(checker)(
           node.initializer
         );
         collection.push(result);
       } else if (ts.isFunctionDeclaration(node) || ts.isArrowFunction(node)) {
-        debugger;
         const result = createFunctionDeclarationParser(checker)(node);
         collection.push(result);
       }
@@ -174,4 +103,4 @@ const parseProgram = (file: string) => {
   return collection;
 };
 
-export default parseProgram;
+export default parseFile;
