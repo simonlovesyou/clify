@@ -10,11 +10,8 @@
     "declaration": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
-    "typeRoots": [
-      "node_modules/@types",
-      "types"
-    ]
+    "typeRoots": ["node_modules/@types"]
   },
   "include": ["src/**/*", "examples/**/*", "types/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts"]
-  }
+}
