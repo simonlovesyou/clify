@@ -3,10 +3,10 @@ import {
   fileHeaders,
   getImports,
   getCliProgramForProgram,
-  wrapCodeExecutionWithErrorHandler
+  wrapCodeExecutionWithErrorHandler,
 } from "./builders";
-import {pipe} from 'fp-ts/function'
-import {format} from 'prettier'
+import { pipe } from "fp-ts/function";
+import { format } from "prettier";
 
 export type Options = {
   positionals?: boolean;
@@ -22,19 +22,19 @@ const createCli = (
   parsedProgram: ReturnType<typeof parseProgram>,
   options: Options
 ) => {
-  debugger;
-  return format(`
+  return format(
+    `
     ${fileHeaders(options)()}
     ${getImports(options)(parsedProgram)}
 
-    ${
-      pipe(
-        parsedProgram,
-        getCliProgramForProgram(options),
-        wrapCodeExecutionWithErrorHandler(options)
-      )
-    }
-  `.trim(), {parser: 'typescript'});
+    ${pipe(
+      parsedProgram,
+      getCliProgramForProgram(options),
+      wrapCodeExecutionWithErrorHandler(options)
+    )}
+  `.trim(),
+    { parser: "typescript" }
+  );
 };
 
 export default createCli;
