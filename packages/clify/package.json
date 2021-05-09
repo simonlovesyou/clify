@@ -1,7 +1,7 @@
 {
   "name": "@clify/clify",
   "version": "1.0.0",
-  "description": "",
+  "description": "Automagically generate a CLI for your typescript project.",
   "main": "index.js",
   "author": "Simon Johansson <simonljohansson92@gmail.com>",
   "scripts": {
