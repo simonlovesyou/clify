@@ -6,7 +6,12 @@
   "typings": "./dist/index.d.ts",
   "author": "Simon Johansson <simonljohansson92@gmail.com>",
   "license": "MIT",
-  "files": ["src", "dist", "README.md", "LICENSE.md"],
+  "files": [
+    "src",
+    "dist",
+    "README.md",
+    "LICENSE.md"
+  ],
   "scripts": {
     "build:ts": "yarn tsc --project ./tsconfig.build.json",
     "build": "yarn build:ts",
@@ -16,6 +21,7 @@
     "prepublish": "yarn clean && yarn build"
   },
   "devDependencies": {
+    "@tsconfig/node14": "^1.0.0",
     "@types/fs-extra": "^9.0.11",
     "@types/jest": "^26.0.23",
     "@types/jest-specific-snapshot": "^0.5.5",

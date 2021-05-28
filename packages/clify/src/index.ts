@@ -25,7 +25,7 @@ export type Options = {
   /**
    * Whether or not argument names should be kebab cased
    */
-  kebabCaseKeys: boolean;
+  kebabCaseKeys?: boolean;
   /**
    * Arguments are passed in as positionals.
    * The argument can be a file path to a valid JSON configuration file, or a directory path to a directory containing a tsconfig.json file.
@@ -93,9 +93,9 @@ export const clify = async (
   console.log(cli);
   debugger;
 };
-console.log(process.argv)
+
 clify(process.argv[2], {
-  positionals: false,
+  positionals: true,
   typescript: true,
   kebabCaseKeys: true,
 });

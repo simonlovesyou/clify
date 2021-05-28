@@ -1,20 +1,9 @@
 {
+  "extends": "@tsconfig/node14/tsconfig.json",
   "compilerOptions": {
-    "esModuleInterop": true,
-    "target": "es6",
-    "module": "commonjs",
     "moduleResolution": "node",
-    "preserveConstEnums": true,
-    "outDir": "dist",
-    "sourceMap": true,
-    "declaration": true,
     "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true,
-    "typeRoots": [
-      "node_modules/@types",
-      "types"
-    ]
+    "typeRoots": ["node_modules/@types", "types"]
   },
-  "include": ["src/**/*", "tests/**/*"],
-  "exclude": ["node_modules"]
-  }
+  "include": ["src/**/*", "examples/**/*", "types/**/*"]
+}

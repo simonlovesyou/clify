@@ -4,9 +4,18 @@ Automagically generate a CLI for your typescript project.
 
 ## Installation
 
+```
+yarn add @clify/clify -D
+npm install @clify/clify -D
+```
+
+### Note
+The outputted program also needs the following dependencies:
+* [@cling/parser](https://github.com/simonlovesyou/cling/tree/main/packages/parser)
+
 ## Usage
 
-Execute clify in your terminal and point to a typescript file and specify where it should output your app using the `--output` flag.
+Execute clify in your terminal and point to a typescript file. Specify where it should output your app using the `--output` flag (optional).
 
 ### Example
 ```ts
@@ -23,14 +32,16 @@ And in your terminal:
 yarn clify ./add.ts --output bin/add.js
 ```
 
+Make it an executable with `chmod +x bin/add.js`
+
 You can then run your CLI app using `ts-node`:
 ```bash
-ts-node bin/add.js 20 4
-> 24
-ts-node bin/add.js --numberA 40 --numberB 2
+ts-node bin/add.js 40 2
 > 42
 ts-node bin/add.js --help
 > Usage: add <number> <number>
+> Add two numbers together.
+> 
 > Options:
 > --help, -h
 ```
@@ -45,7 +56,7 @@ export const subtract = (numberA: number, numberB: number) => numberA - numberB
 ```
 
 ```bash
-npx clify ./math.ts --emit bin/add.js
+npx clify ./math.ts --o bin/add.js
 ts-node bin/add.js add 20 4
 > 24
 ts-node bin/add.js subtract --numberA 40 --numberB 2

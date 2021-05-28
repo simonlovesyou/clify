@@ -4,6 +4,9 @@
   "description": "Automagically generate a CLI for your typescript project.",
   "main": "index.js",
   "author": "Simon Johansson <simonljohansson92@gmail.com>",
+  "bin": {
+    "clify": "bin/index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "yarn build:ts",
@@ -11,10 +14,15 @@
     "clean": "rm -rf ./dist/",
     "prepublish": "yarn clean && yarn build"
   },
-  "files": ["src", "dist", "README.md"],
+  "files": [
+    "src",
+    "dist",
+    "README.md"
+  ],
   "license": "MIT",
   "devDependencies": {
     "@clify/program-parser": "^1.0.0",
+    "@tsconfig/node14": "^1.0.0",
     "@types/change-case": "^2.3.1",
     "@types/dedent": "^0.7.0",
     "@types/fs-extra": "^9.0.8",

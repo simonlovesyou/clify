@@ -11,7 +11,7 @@ const getJsonSchemaFromParameter = (
   functionDeclaration: ts.ArrowFunction | ts.FunctionDeclaration
 ): JSONSchema7 => {
   let functionName = ts.isFunctionDeclaration(functionDeclaration)
-    ? functionDeclaration.name.getText()
+    ? functionDeclaration.name?.getText()
     : (functionDeclaration.parent as ts.VariableDeclaration).name.getText();
 
   const config = {
@@ -20,10 +20,10 @@ const getJsonSchemaFromParameter = (
     type: `Parameters<typeof ${functionName}>`,
     jsDoc: 'extended' as const
   };
-  console.log(dereference)
+
   const schema = dereference(tsj.createGenerator(config).createSchema(config.type))
-  console.log(schema)
-  const parameterSchema = schema.definitions[
+
+  const parameterSchema = schema.definitions![
     `Parameters<typeof ${functionName}>`
   ] as JSONSchema7;
 

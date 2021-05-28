@@ -1,6 +1,6 @@
 import * as ts from "typescript";
-import getJsonSchemaForFunction from './getJsonSchemaForFunction'
-import * as path from 'path'
+import getJsonSchemaForFunction from "./getJsonSchemaForFunction";
+import * as path from "path";
 
 function isNodeExported(node: ts.Node): boolean {
   return (
@@ -34,14 +34,20 @@ const isFunctionAsynchronous = declarationHasModifier(
 const createFunctionDeclarationParser = (checker: ts.TypeChecker) => {
   return (functionDeclaration: ts.FunctionDeclaration | ts.ArrowFunction) => {
     const signature = checker.getSignatureFromDeclaration(functionDeclaration);
+    if (!signature) {
+      throw new Error(
+        "Could not find function signature from function declaration"
+      );
+    }
     // Assuming that there's only one comment. Will probably bite me in the ass later.
     const comment = signature.getDocumentationComment(checker)[0];
 
     const jsDocTags = ts.getJSDocTags(functionDeclaration);
     const name = ts.isFunctionDeclaration(functionDeclaration)
-      ? functionDeclaration.name.text
-      : (functionDeclaration.parent as ts.VariableDeclaration).name.getText();
-    const schema = getJsonSchemaForFunction(functionDeclaration)
+      ? functionDeclaration.name?.getText()
+      : (functionDeclaration.parent as ts.VariableDeclaration).name.getText() ||
+        "anonymous";
+    const schema = getJsonSchemaForFunction(functionDeclaration);
     return {
       name,
       schema,
@@ -80,6 +86,7 @@ const parseFile = (file: string) => {
     if (path.resolve(sourceFile.fileName) === path.resolve(file)) {
       if (
         ts.isVariableDeclaration(node) &&
+        node.initializer &&
         ts.isArrowFunction(node.initializer)
       ) {
         const result = createFunctionDeclarationParser(checker)(

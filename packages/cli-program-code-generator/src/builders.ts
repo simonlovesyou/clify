@@ -1,10 +1,9 @@
 import * as path from "path";
-import dedent = require("dedent");
 import { pipe, identity } from "fp-ts/lib/function";
 import { Options, ParsedFunction, ParsedProgram } from ".";
 import { JSONSchema7 } from "json-schema";
 import { mergeDeepRight } from "ramda";
-import type { Schema as CommandLineSchema } from "@cling/parser";
+import type { Schema as CommandLineSchema, Argument } from "@cling/parser";
 import { convertJSONSchemaToArgument } from "@cling/utils";
 
 export const fileHeaders = (options: Options) => () =>
@@ -16,6 +15,11 @@ export const fileHeaders = (options: Options) => () =>
 const createCommandSchemaFromJSONSchema = (options: Options) => (
   jsonSchema: JSONSchema7
 ) => {
+  if (!jsonSchema.properties) {
+    throw new Error(
+      "Cannot create command schema for JSON schema without `properties` object"
+    );
+  }
   return Object.entries(jsonSchema.properties).reduce(
     (acc: CommandLineSchema, [propertyName, property]): CommandLineSchema => {
       if (property === true || property === false) {
@@ -41,10 +45,11 @@ const createCommandSchemaFromJSONSchema = (options: Options) => (
             },
           };
         }
-        return mergeDeepRight(acc, {
-          arguments: nestedSchema["arguments"] || {},
-          options: nestedSchema.options || {},
-        });
+        // @ts-ignore
+        return mergeDeepRight<CommandLineSchema, CommandLineSchema>(acc, {
+          arguments: nestedSchema["arguments"],
+          options: nestedSchema.options,
+        } as CommandLineSchema);
       }
       if (required) {
         if (options.positionals) {
@@ -59,14 +64,22 @@ const createCommandSchemaFromJSONSchema = (options: Options) => (
         return mergeDeepRight(acc, {
           arguments: {
             [propertyName]: convertJSONSchemaToArgument(property),
-          }
-        });
+          },
+        }) as {
+          arguments: {
+            [x: string]: Argument;
+          };
+        };
       }
       return mergeDeepRight(acc, {
         options: {
           [propertyName]: convertJSONSchemaToArgument(property),
-        }
-      });
+        },
+      }) as {
+        arguments: {
+          [x: string]: Argument;
+        };
+      };
     },
     {}
   );
@@ -80,13 +93,12 @@ export const getCliProgramForProgram = (options: Options) => (
   const commandSchema = createCommandSchemaFromJSONSchema(options)(
     parsedProgram[0].schema
   );
-  return dedent`
-    const programSchema = ${JSON.stringify(commandSchema, null, 2).replace(
-      /("type": "\w+")/g,
-      "$1 as const"
-    )}
+  return `
+    const programSchema = ${JSON.stringify(commandSchema, null, 2) + "as const"}
 
-    const { ${Object.keys(commandSchema).join(", ")} } = parser(programSchema);
+    const { ${Object.keys(commandSchema)
+      .map((key) => (key === "arguments" ? `arguments: args` : key))
+      .join(", ")} } = cling(programSchema, {});
     
     ${pipe(
       parsedFunction,
@@ -100,8 +112,8 @@ export const getCliProgramForProgram = (options: Options) => (
 
 export const getImports = (options: Options) => (
   parsedProgram: ParsedProgram
-) => dedent`
-  import parser from '@cling/parser'
+) => `
+  import cling from '@cling/cling'
   import { ${parsedProgram.map((parsedFunction) =>
     parsedFunction.defaultExport
       ? `default as ${parsedFunction.name}`
@@ -114,7 +126,7 @@ type ArgumentPosition =
   | {
       type: "variable";
       parent: string;
-      key: string;
+      key: string | number;
     }
   | {
       type: "object";
@@ -124,9 +136,14 @@ type ArgumentPosition =
 const getArgumentPosition = (options: Options) => (
   jsonSchema: JSONSchema7,
   commandSchema: CommandLineSchema
-): ArgumentPosition[] =>
-  Object.entries(jsonSchema.properties).reduce(
-    (acc, [propertyName, property], index) => {
+): ArgumentPosition[] => {
+  if (!jsonSchema.properties) {
+    throw new Error(
+      "Cannot create argument positions for JSON schema without `properties` object"
+    );
+  }
+  return Object.entries(jsonSchema.properties).reduce(
+    (acc: ArgumentPosition[], [propertyName, property], index) => {
       const requiredList = jsonSchema.required || [];
       const required = requiredList.includes(propertyName);
       if (property === true || property === false) {
@@ -142,9 +159,7 @@ const getArgumentPosition = (options: Options) => (
         ];
       }
       if (required) {
-        const objectPropertyName = options.positionals
-          ? "positionals"
-          : "arguments";
+        const objectPropertyName = options.positionals ? "positionals" : "args";
         const objectPropertyKey = options.positionals ? index : propertyName;
         return [
           ...acc,
@@ -166,7 +181,7 @@ const getArgumentPosition = (options: Options) => (
     },
     []
   );
-
+};
 export const getUserlandExecution = (options: Options) => (
   parsedFunction: ParsedFunction,
   commandSchema: CommandLineSchema
@@ -176,7 +191,7 @@ export const getUserlandExecution = (options: Options) => (
     commandSchema
   );
 
-  return dedent`
+  return `
   const result = ${parsedFunction.async ? "await" : ""} ${
     parsedFunction.name
   }.apply(null, [${argumentPositions
@@ -204,7 +219,7 @@ export const getUserlandExecution = (options: Options) => (
 
 export const wrapCodeExecutionWithErrorHandler = (options: Options) => (
   code: string
-): string => dedent`
+): string => `
 try {
   ${code}
 } catch(error) {
@@ -215,7 +230,7 @@ try {
 
 export const wrapCodeBlockWithIEAsyncFunction = (options: Options) => (
   code: string
-) => dedent`
+) => `
   (async () => {
     ${code}
   })()

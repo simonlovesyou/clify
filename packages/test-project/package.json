@@ -1,0 +1,13 @@
+{
+  "name": "y",
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@cling/cling": "^0.1.0",
+    "@cling/parser": "^0.2.2"
+  },
+  "devDependencies": {
+    "@types/node": "^15.6.0"
+  }
+}
